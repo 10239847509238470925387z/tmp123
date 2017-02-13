@@ -5,8 +5,9 @@ WI = "WI"
 
 ACCT_TYPES = ["529", "PI", "WI"]
 
-ERR_DICT = {
-        "speech": "something wrong",
+
+def ERR_DICT(speech="something wrong"): return {
+        "speech": speech,
         "displayText": "something very wrong",
         #"data": {},
         # "contextOut": [],
