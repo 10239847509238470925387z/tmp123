@@ -37,7 +37,7 @@ def makeWebhookResult(req):
     result = req.get("result")
     parameters = result.get("parameters")
     acct = parameters.get("account-type")
-    acct = acct.strip
+    acct = acct.strip()
     if acct=='401k':
         acct='WI'
 
