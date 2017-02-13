@@ -3,6 +3,8 @@
 import urllib
 import json
 import os
+import constants
+import accounts
 
 from flask import Flask
 from flask import request
@@ -11,6 +13,13 @@ from flask import make_response
 # Flask app should start in global layout
 app = Flask(__name__)
 
+PERSON = constants.TEST_1
+
+cost = {'Europe':100,
+        'North America':200,
+        'South America':300,
+        'Asia':400,
+        'Africa':500}
 
 @app.route('/webhook', methods=['POST'])
 def webhook():
@@ -28,15 +37,22 @@ def webhook():
     return r
 
 def makeWebhookResult(req):
-    if req.get("result").get("action") != "shipping.cost":
-        return {}
+    if req.get("result").get("action") != "account.balance":
+        return constants.ERR_DICT
+
     result = req.get("result")
     parameters = result.get("parameters")
-    zone = parameters.get("ship-zone")
+    acct = parameters.get("account-type")
+    qual = parameters.get("qualifier")
 
-    cost = {'Europe':100, 'North America':200, 'South America':300, 'Asia':400, 'Africa':500}
+    if acct:
+        speech = "The value of your {ACCT_TYPE} accounts is {VALU} dollars.".format(VALU=accounts.get_balance(PERSON, ACCT_TYPE=acct))
+    elif qual:
+        speech = "The total value of your accounts is {VALU} dollars.".format(VALU=accounts.get_balance(PERSON))
+    else:
+        speech = "You don't have any {ACCT_TYPE} accounts. The total value of your other accounts is {VALU} dollars.".format(ACCT_TYPE=acct, VALU=accounts.get_balance(PERSON))
 
-    speech = "The cost of shipping to " + zone + " is " + str(cost[zone]) + " euros."
+    # speech = "The cost of shipping to " + zone + " is " + str(cost[zone]) + " euros."
 
     print("Response:")
     print(speech)
@@ -46,8 +62,9 @@ def makeWebhookResult(req):
         "displayText": speech,
         #"data": {},
         # "contextOut": [],
-        "source": "apiai-onlinestore-shipping"
+        "source": "home"
     }
+
 
 
 if __name__ == '__main__':
