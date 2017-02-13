@@ -10,7 +10,7 @@ def get_balance(person=constants.TEST_1, acct=constants.ALL):
             value += get_indv_balance(person, a_type)
         return value
     else:
-        return get_indv_balance(person,acct)
+        return get_indv_balance(person, acct)
 
 
 def get_indv_balance(person=constants.TEST_1, acct=constants.PI):
