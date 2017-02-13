@@ -37,6 +37,9 @@ def makeWebhookResult(req):
     result = req.get("result")
     parameters = result.get("parameters")
     acct = parameters.get("account-type")
+    if acct=='401k':
+        acct='WI'
+
     qual = parameters.get("qualifier")
 
     speech = str(req.get("result").get("action"))
@@ -56,6 +59,8 @@ def makeWebhookResult(req):
 
     print("Response:")
     print(speech)
+
+    speech += "\nAnything else I can help you with today?"
 
     return {
         "speech": speech,
