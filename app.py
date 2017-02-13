@@ -31,8 +31,8 @@ def webhook():
     return r
 
 def makeWebhookResult(req):
-    if req.get("result").get("action") != "account.balance":
-        return constants.ERR_DICT
+    if req.get("result").get("action") != "account-balance":
+        return constants.ERR_DICT(req.get("result").get("action"))
 
     result = req.get("result")
     parameters = result.get("parameters")
