@@ -15,12 +15,6 @@ app = Flask(__name__)
 
 PERSON = constants.TEST_1
 
-cost = {'Europe':100,
-        'North America':200,
-        'South America':300,
-        'Asia':400,
-        'Africa':500}
-
 @app.route('/webhook', methods=['POST'])
 def webhook():
     req = request.get_json(silent=True, force=True)
@@ -44,6 +38,8 @@ def makeWebhookResult(req):
     parameters = result.get("parameters")
     acct = parameters.get("account-type")
     qual = parameters.get("qualifier")
+
+    speech = str(req)
 
     if acct:
         speech = "The value of your {ACCT_TYPE} accounts is {VALU} dollars.".format(VALU=accounts.get_balance(PERSON, ACCT_TYPE=acct))
