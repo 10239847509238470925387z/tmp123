@@ -39,7 +39,7 @@ def makeWebhookResult(req):
     acct = parameters.get("account-type")
     qual = parameters.get("qualifier")
 
-    speech = str(req)
+    speech = str(req.get("result").get("action"))
 
     if acct:
         speech = "The value of your {ACCT_TYPE} accounts is {VALU} dollars.".format(VALU=accounts.get_balance(PERSON, ACCT_TYPE=acct))
