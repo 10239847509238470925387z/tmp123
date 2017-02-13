@@ -42,11 +42,15 @@ def makeWebhookResult(req):
     speech = str(req.get("result").get("action"))
 
     if acct:
-        speech = "The value of your {ACCT_TYPE} accounts is {VALU} dollars.".format(VALU=accounts.get_balance(PERSON, acct), ACCT_TYPE=acct)
+        if acct in constants.ACCT_TYPES:
+            speech = "The value of your {ACCT_TYPE} accounts is {VALU} dollars.".format(VALU=accounts.get_balance(PERSON, acct), ACCT_TYPE=acct)
+        else:
+            speech = "You don't have any accounts of that type. The total value of your other accounts is {VALU} dollars.".format(
+                VALU=accounts.get_balance(PERSON))
     elif qual:
         speech = "The total value of your accounts is {VALU} dollars.".format(VALU=accounts.get_balance(PERSON))
     else:
-        speech = "You don't have any accounts of that type. The total value of your other accounts is {VALU} dollars.".format(VALU=accounts.get_balance(PERSON))
+        speech = "The total value of your accounts is {VALU} dollars.".format(VALU=accounts.get_balance(PERSON))
 
     # speech = "The cost of shipping to " + zone + " is " + str(cost[zone]) + " euros."
 
